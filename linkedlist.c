@@ -67,20 +67,13 @@ void insertBest(long size) {
 	clock_t total_t;
 	long counter;
 
-	double clockNumbers[size];
-	for (int i = 0; i <= size; i++){
-		clockNumbers[i] = clock();
-		//printf("%lf ",randomNumbers[i]);
-	}
-
-	Node* pq = newNode(0, clock()-start_t);
+	Node* pq = newNode(0, 555%size);
 	for (counter = 0; counter <= size; counter++) {
-		//double clockV = clock()-start_t;
-		insert(&pq, counter, (-1)*clockNumbers[counter]);
+		insert(&pq, counter, size-counter);
 	}
 
 	start_t = clock();
-	insert(&pq, -1, -100000000);
+	insert(&pq, -1, -1);
 	end_t = clock();
 	total_t = (double)(end_t - start_t);
 
@@ -95,20 +88,12 @@ void insertWorst(long size) {
 	clock_t total_t;
 	long counter;
 
-	double randomNumbers[size];
-	for (int i = 0; i <= size; i++){
-		randomNumbers[i] = clock();
-		//printf("%lf ",randomNumbers[i]);
-	}
-
-
-	Node* pq = newNode(0, clock()-start_t);
+	Node* pq = newNode(0, 555%size);
 	for (counter = 0; counter <= size; counter++) {
-		//double clockV = clock()-start_t;
-		insert(&pq, counter, (-1)*randomNumbers[counter]);
+		insert(&pq, counter, size-counter);
 	}
 	start_t = clock();
-	insert(&pq, counter, clock());
+	insert(&pq, counter, size+1);
 	end_t = clock();
 
 	total_t = (double)(end_t - start_t);
@@ -119,7 +104,7 @@ void insertWorst(long size) {
 }
 
 void insertAverage(long size){
-	//time_t t;
+
 	srand(time(NULL));
 
 	clock_t start_t;
@@ -127,23 +112,13 @@ void insertAverage(long size){
 	clock_t total_t;
 	long counter;
 
-	double randomNumbers[size];
-	for (int i = 0; i <= size; i++){
-		randomNumbers[i] = i%500;
-		//printf("%lf ",randomNumbers[i]);
-	}
-	//printf("\n" );
-
-	//printf("%ld\n", start_t);
-
-	Node* pq = newNode(0, rand()%500);
+	Node* pq = newNode(0, rand()%size);
 	for (counter = 0; counter <= size; counter++) {
 		insert(&pq, counter, size-counter);
 	}
 	start_t = clock();
 	insert(&pq, counter, rand()%size);
 	end_t = clock();
-	//printf("%ld\n", end_t);
 
 	total_t = (double)(end_t - start_t);
 
@@ -167,17 +142,15 @@ void testDeleteMax(long size){
 	clock_t total_t;
 	long counter;
 
-	Node* pq = newNode(0, clock()-start_t);
+	Node* pq = newNode(0, 5555%size);
 	for (counter = 0; counter <= size; counter++) {
-		double clockV = clock()-start_t;
-		insert(&pq, counter, -clockV);
+		insert(&pq, counter, size-counter);
 	}
 
 	start_t = clock();
-	//while (!isEmpty(&pq)) {
-		deleteMax(&pq);
-	//}
+	deleteMax(&pq);
 	end_t = clock();
+
 	total_t = (double)(end_t - start_t);
 
 	printf("Any case, deleteMax\n");
@@ -193,13 +166,18 @@ int main(){
 	testInsert(100000);
 	printf("\n" );
 	testInsert(1000000);
-
-	//printf("-------\n");
-	//printf("-------\n");
-	//printf("-------\n");
-	//testDeleteMax(10000);
-	//testDeleteMax(100000);
-	//testDeleteMax(1000000);
+	testInsert(2000000);
+	testInsert(3000000);
+	printf("\n" );
+	printf("\n" );
+	printf("\n" );
+	testDeleteMax(1000);
+	printf("\n" );
+	testDeleteMax(10000);
+	printf("\n" );
+	testDeleteMax(100000);
+	printf("\n" );
+	testDeleteMax(1000000);
 
 	return 0;
 }
