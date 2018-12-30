@@ -73,12 +73,14 @@ void insertBest(long size) {
 		//printf("%lf ",randomNumbers[i]);
 	}
 
-	start_t = clock();
 	Node* pq = newNode(0, clock()-start_t);
 	for (counter = 0; counter <= size; counter++) {
 		//double clockV = clock()-start_t;
 		insert(&pq, counter, (-1)*clockNumbers[counter]);
 	}
+
+	start_t = clock();
+	insert(&pq, -1, -100000000);
 	end_t = clock();
 	total_t = (double)(end_t - start_t);
 
@@ -99,13 +101,14 @@ void insertWorst(long size) {
 		//printf("%lf ",randomNumbers[i]);
 	}
 
-	start_t = clock();
 
 	Node* pq = newNode(0, clock()-start_t);
 	for (counter = 0; counter <= size; counter++) {
 		//double clockV = clock()-start_t;
-		insert(&pq, counter, randomNumbers[counter]);
+		insert(&pq, counter, (-1)*randomNumbers[counter]);
 	}
+	start_t = clock();
+	insert(&pq, counter, clock());
 	end_t = clock();
 
 	total_t = (double)(end_t - start_t);
@@ -126,18 +129,19 @@ void insertAverage(long size){
 
 	double randomNumbers[size];
 	for (int i = 0; i <= size; i++){
-		randomNumbers[i] = rand()%500;
+		randomNumbers[i] = i%500;
 		//printf("%lf ",randomNumbers[i]);
 	}
 	//printf("\n" );
 
-	start_t = clock();
 	//printf("%ld\n", start_t);
 
 	Node* pq = newNode(0, rand()%500);
 	for (counter = 0; counter <= size; counter++) {
-		insert(&pq, counter, randomNumbers[counter]);
+		insert(&pq, counter, size-counter);
 	}
+	start_t = clock();
+	insert(&pq, counter, rand()%size);
 	end_t = clock();
 	//printf("%ld\n", end_t);
 
@@ -170,9 +174,9 @@ void testDeleteMax(long size){
 	}
 
 	start_t = clock();
-	while (!isEmpty(&pq)) {
+	//while (!isEmpty(&pq)) {
 		deleteMax(&pq);
-	}
+	//}
 	end_t = clock();
 	total_t = (double)(end_t - start_t);
 
@@ -183,10 +187,13 @@ void testDeleteMax(long size){
 
 int main(){
 	testInsert(1000);
-	printf("-------\n");
+	printf("\n" );
 	testInsert(10000);
-	printf("-------\n");
-	testInsert(20000);
+	printf("\n" );
+	testInsert(100000);
+	printf("\n" );
+	testInsert(1000000);
+
 	//printf("-------\n");
 	//printf("-------\n");
 	//printf("-------\n");
