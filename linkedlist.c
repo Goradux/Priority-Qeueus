@@ -37,59 +37,162 @@ void insert(Node** head, int dataNew, double priorityNew) {
 	// shortcut case
 	// if new priority is higher than heads,
 	// insert new head
+
+	/*
 	if ((*head)->priority > priorityNew) {
 		// Insert new Node before head
 		temp->next = *head;
 		(*head) = temp;
 	}
-	else {
+	else { */
 		// Traverse the list and find a
 		// position to insert new node
-		while (start->next != NULL && start->next->priority < priorityNew) {
+							// "<=" ensures FIFO
+		while (start->next != NULL && start->next->priority <= priorityNew) {
 			start = start->next;
 		}
 		// here we are at the right position
 		temp->next = start->next;
 		start->next = temp;
-	}
+	//}
 }
 
 int isEmpty(Node** head) {
 	return (*head) == NULL;
 }
 
-int main(){
-	//struct Node first;
-	//first.value = 10;
-	//first.priority = 11;
+void insertBest(long size) {
+	clock_t start_t;
+	clock_t end_t;
+	clock_t total_t;
+	long counter;
+
+	double clockNumbers[size];
+	for (int i = 0; i <= size; i++){
+		clockNumbers[i] = clock();
+		//printf("%lf ",randomNumbers[i]);
+	}
+
+	start_t = clock();
+	Node* pq = newNode(0, clock()-start_t);
+	for (counter = 0; counter <= size; counter++) {
+		//double clockV = clock()-start_t;
+		insert(&pq, counter, (-1)*clockNumbers[counter]);
+	}
+	end_t = clock();
+	total_t = (double)(end_t - start_t);
+
+	printf("Best case, insert\n");
+	printf("Total CPU clocks to queue up %ld elements: %ld\n", size, total_t  );
+	return;
+}
+
+void insertWorst(long size) {
+	clock_t start_t;
+	clock_t end_t;
+	clock_t total_t;
+	long counter;
+
+	double randomNumbers[size];
+	for (int i = 0; i <= size; i++){
+		randomNumbers[i] = clock();
+		//printf("%lf ",randomNumbers[i]);
+	}
+
+	start_t = clock();
+
+	Node* pq = newNode(0, clock()-start_t);
+	for (counter = 0; counter <= size; counter++) {
+		//double clockV = clock()-start_t;
+		insert(&pq, counter, randomNumbers[counter]);
+	}
+	end_t = clock();
+
+	total_t = (double)(end_t - start_t);
+
+	printf("Worst case, insert\n");
+	printf("Total CPU clocks to queue up %ld elements: %ld\n", size, total_t  );
+	return;
+}
+
+void insertAverage(long size){
+	//time_t t;
+	srand(time(NULL));
 
 	clock_t start_t;
 	clock_t end_t;
 	clock_t total_t;
-
 	long counter;
 
-	start_t = clock();
-	Node* pq = newNode(0, clock()-start_t);
-	for (counter = 0; counter <= 10000; counter++) {
-		double clockV = clock()-start_t;
-		insert(&pq, clockV, clockV);
+	double randomNumbers[size];
+	for (int i = 0; i <= size; i++){
+		randomNumbers[i] = rand()%500;
+		//printf("%lf ",randomNumbers[i]);
 	}
-	//insert(&pq, 5, 2);
-	//insert(&pq, 6, 3);
-	//insert(&pq, 7, 0);
+	//printf("\n" );
+
+	start_t = clock();
+	//printf("%ld\n", start_t);
+
+	Node* pq = newNode(0, rand()%500);
+	for (counter = 0; counter <= size; counter++) {
+		insert(&pq, counter, randomNumbers[counter]);
+	}
+	end_t = clock();
+	//printf("%ld\n", end_t);
+
+	total_t = (double)(end_t - start_t);
+
+	printf("Average case, insert\n");
+	printf("Total CPU clocks to queue up %ld elements: %ld\n", size, total_t  );
+	return;
+}
+
+void testInsert(long size) {
+
+	insertBest(size);
+	insertAverage(size);
+	insertWorst(size);
+
+	return;
+}
+
+void testDeleteMax(long size){
+	clock_t start_t;
+	clock_t end_t;
+	clock_t total_t;
+	long counter;
+
+	Node* pq = newNode(0, clock()-start_t);
+	for (counter = 0; counter <= size; counter++) {
+		double clockV = clock()-start_t;
+		insert(&pq, counter, -clockV);
+	}
+
+	start_t = clock();
+	while (!isEmpty(&pq)) {
+		deleteMax(&pq);
+	}
 	end_t = clock();
 	total_t = (double)(end_t - start_t);
 
-	int i = 0;
-	while (!isEmpty(&pq)) {
-		printf("(%d, %d) ", headValue(&pq), i++);
-		deleteMax(&pq);
-	}
+	printf("Any case, deleteMax\n");
+	printf("Total CPU clocks to delete %ld elements: %ld\n", size, total_t  );
+	return;
+}
 
-	printf("Total CPU clocks: %ld\n", total_t  );
+int main(){
+	testInsert(1000);
+	printf("-------\n");
+	testInsert(10000);
+	printf("-------\n");
+	testInsert(20000);
+	//printf("-------\n");
+	//printf("-------\n");
+	//printf("-------\n");
+	//testDeleteMax(10000);
+	//testDeleteMax(100000);
+	//testDeleteMax(1000000);
 
-	//int integer = 0;
-	//printf("check this number %d\n", integer);
 	return 0;
 }
