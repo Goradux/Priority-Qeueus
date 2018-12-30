@@ -70,9 +70,9 @@ int main(){
 	long counter;
 
 	start_t = clock();
-	Node* pq = newNode(4,1);
+	Node* pq = newNode(0, clock()-start_t);
 	for (counter = 0; counter <= 10000; counter++) {
-		double clockV = clock();
+		double clockV = clock()-start_t;
 		insert(&pq, clockV, clockV);
 	}
 	//insert(&pq, 5, 2);
@@ -81,12 +81,13 @@ int main(){
 	end_t = clock();
 	total_t = (double)(end_t - start_t);
 
+	int i = 0;
 	while (!isEmpty(&pq)) {
-		printf("%d ", headValue(&pq));
+		printf("(%d, %d) ", headValue(&pq), i++);
 		deleteMax(&pq);
 	}
 
-	printf("Total time taken by CPU: %ld\n", total_t  );
+	printf("Total CPU clocks: %ld\n", total_t  );
 
 	//int integer = 0;
 	//printf("check this number %d\n", integer);
