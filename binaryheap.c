@@ -23,7 +23,7 @@ minHeap initMinHeap(int size) {
 void insertNode(minHeap *hp, int data) {
   //allocating space
   if (hp->size) {
-    hp->elem = realloc(hp->elem, (size+1)*sizeof(node));
+    hp->elem = realloc(hp->elem, (hp->size+1)*sizeof(node));
   } else {
     hp->elem = malloc(sizeof(node));
   }
@@ -53,7 +53,7 @@ void heapify(minHeap *hp, int i) {
     smallest = RCHILD(i);
   }
   if (smallest != i) {
-    swap(&(hp->elem[i]), &(hp->elemp[smallest]));
+    swap(&(hp->elem[i]), &(hp->elem[smallest]));
     heapify(hp, smallest);
   }
 }
@@ -86,7 +86,28 @@ void buildMinHeap(minHeap *hp, int *arr, int size) {
   }
 
   //Making sure that heap property is also satisfied
-  for (i = (hp->size-1)/2, i>=0; i--) {
+  for (i = (hp->size-1)/2; i>=0; i--) {
     heapify(hp, i);
   }
+}
+
+// example https://robin-thomas.github.io/min-heap/
+
+void test() {
+  int i;
+  int size = 10000;
+  int arr[size];
+
+  for (i = 0; i < size; i++) {
+    arr[i] = i;
+  }
+
+  minHeap hp;
+  buildMinHeap(&hp, arr, size);
+  printf("heap was built!\n");
+}
+
+int main() {
+  test();
+  return 0;
 }
