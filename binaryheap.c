@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define LCHILD(x) 2*x+1
 #define RCHILD(x) 2*x+2
@@ -94,6 +95,10 @@ void buildMinHeap(minHeap *hp, int *arr, int size) {
 // example https://robin-thomas.github.io/min-heap/
 
 void test() {
+  clock_t start_t;
+  clock_t end_t;
+  clock_t total_t;
+
   int i;
   int size = 10000;
   int arr[size];
@@ -102,9 +107,14 @@ void test() {
     arr[i] = i;
   }
 
-  minHeap hp;
+  minHeap hp = initMinHeap(10000);
   buildMinHeap(&hp, arr, size);
   printf("heap was built!\n");
+  start_t = clock();
+  insertNode(&hp, 5000);
+  end_t = clock();
+  total_t = (double)(end_t - start_t);
+  printf("node inserted %ld\n", total_t);
 }
 
 int main() {
