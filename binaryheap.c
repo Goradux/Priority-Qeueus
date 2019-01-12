@@ -8,6 +8,7 @@
 
 typedef struct node {
   int data;
+  int priority;
 } node;
 
 typedef struct minHeap {
@@ -15,13 +16,13 @@ typedef struct minHeap {
   node *elem;
 } minHeap;
 
-minHeap initMinHeap(int size) {
+minHeap initMinHeap() {
   minHeap hp;
   hp.size = 0;
   return hp;
 }
 
-void insertNode(minHeap *hp, int data) {
+void insertNode(minHeap *hp, int data, int priority) {
   //allocating space
   if (hp->size) {
     hp->elem = realloc(hp->elem, (hp->size+1)*sizeof(node));
@@ -32,10 +33,11 @@ void insertNode(minHeap *hp, int data) {
   //initializing the node with value
   node nd;
   nd.data = data;
+  nd.priority = priority;
 
   //positioning the node at the right position in the min heap
   int i = (hp->size)++;
-  while(i && nd.data < hp->elem[PARENT(i)].data) {
+  while(i && nd.priority < hp->elem[PARENT(i)].priority) {
     hp->elem[i] = hp->elem[PARENT(i)];
     i = PARENT(i);
   }
@@ -49,8 +51,8 @@ void swap(node *n1, node *n2) {
 }
 
 void heapify(minHeap *hp, int i) {
-  int smallest = (LCHILD(i) < hp-> size && hp->elem[LCHILD(i)].data < hp->elem[i].data) ? LCHILD(i) : i;
-  if (RCHILD(i) < hp->size && hp->elem[RCHILD(i)].data < hp->elem[smallest].data) {
+  int smallest = (LCHILD(i) < hp-> size && hp->elem[LCHILD(i)].priority < hp->elem[i].priority) ? LCHILD(i) : i;
+  if (RCHILD(i) < hp->size && hp->elem[RCHILD(i)].priority < hp->elem[smallest].priority) {
     smallest = RCHILD(i);
   }
   if (smallest != i) {
@@ -71,6 +73,7 @@ void deleteNode(minHeap *hp) {
   }
 }
 
+/*
 void buildMinHeap(minHeap *hp, int *arr, int size) {
   int i;
 
@@ -91,6 +94,7 @@ void buildMinHeap(minHeap *hp, int *arr, int size) {
     heapify(hp, i);
   }
 }
+*/
 
 // example https://robin-thomas.github.io/min-heap/
 
@@ -100,18 +104,17 @@ void test() {
   clock_t total_t;
 
   int i;
-  int size = 10000;
-  int arr[size];
+  int size = 10000000;
 
+  minHeap hp = initMinHeap();
   for (i = 0; i < size; i++) {
-    arr[i] = i;
+    insertNode(&hp, i, i);
   }
-
-  minHeap hp = initMinHeap(10000);
-  buildMinHeap(&hp, arr, size);
   printf("heap was built!\n");
   start_t = clock();
-  insertNode(&hp, 5000);
+  //for (i = 1000; i > 0; i--) {
+    insertNode(&hp, 0, 0);
+  //}
   end_t = clock();
   total_t = (double)(end_t - start_t);
   printf("node inserted %ld\n", total_t);

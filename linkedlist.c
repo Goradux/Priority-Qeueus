@@ -159,7 +159,7 @@ void testDeleteMax(long size){
 }
 
 int main(){
-	testInsert(1000);
+	testInsert(10000000);
 	printf("\n" );
 	testInsert(10000);
 	printf("\n" );
