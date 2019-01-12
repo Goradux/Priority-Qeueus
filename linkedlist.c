@@ -73,7 +73,9 @@ void insertBest(long size) {
 	}
 
 	start_t = clock();
-	insert(&pq, -1, -1);
+	for (int i = 0; i < 500; i++){
+		insert(&pq, -1, -1);
+	}
 	end_t = clock();
 	total_t = (double)(end_t - start_t);
 
@@ -93,8 +95,16 @@ void insertWorst(long size) {
 		insert(&pq, counter, size-counter);
 	}
 	start_t = clock();
-	insert(&pq, counter, size+1);
+	for (int i = 0; i < 500; i++) {
+		insert(&pq, counter, size+1+i);
+	}
 	end_t = clock();
+
+/*
+for (int i = 0; i < 1000; i++) {
+	insert(&pq, 1, size+1);
+}
+*/
 
 	total_t = (double)(end_t - start_t);
 
@@ -117,7 +127,9 @@ void insertAverage(long size){
 		insert(&pq, counter, size-counter);
 	}
 	start_t = clock();
-	insert(&pq, counter, rand()%size);
+	for (int i = 0; i < 500; i++) {
+		insert(&pq, counter, rand()%size);
+	}
 	end_t = clock();
 
 	total_t = (double)(end_t - start_t);
@@ -148,7 +160,9 @@ void testDeleteMax(long size){
 	}
 
 	start_t = clock();
-	deleteMax(&pq);
+	for (int i = 0; i < 500; i++) {
+		deleteMax(&pq);
+	}
 	end_t = clock();
 
 	total_t = (double)(end_t - start_t);
@@ -159,8 +173,14 @@ void testDeleteMax(long size){
 }
 
 int main(){
-	testInsert(10000000);
+
+	int queueSize = 100000;
+
+	testInsert(queueSize);
 	printf("\n" );
+	testDeleteMax(queueSize);
+
+/*
 	testInsert(10000);
 	printf("\n" );
 	testInsert(100000);
@@ -178,6 +198,6 @@ int main(){
 	testDeleteMax(100000);
 	printf("\n" );
 	testDeleteMax(1000000);
-
+*/
 	return 0;
 }

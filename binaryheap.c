@@ -63,7 +63,7 @@ void heapify(minHeap *hp, int i) {
 
 void deleteNode(minHeap *hp) {
   if (hp->size) {
-    printf("Deleting node %d\n\n", hp->elem[0].data);
+    //printf("Deleting node %d\n\n", hp->elem[0].data);
     hp->elem[0] = hp->elem[--(hp->size)];
     hp->elem = realloc(hp->elem, hp->size*sizeof(node));
     heapify(hp, 0);
@@ -73,54 +73,114 @@ void deleteNode(minHeap *hp) {
   }
 }
 
-/*
-void buildMinHeap(minHeap *hp, int *arr, int size) {
-  int i;
-
-  //Insertion into the heap without violating the shape property
-  for (i = 0; i < size; i++) {
-    if (hp->size) {
-      hp->elem = realloc(hp->elem, (hp->size+1)*sizeof(node));
-    } else {
-      hp->elem = malloc(sizeof(node));
-    }
-    node nd;
-    nd.data = arr[i];
-    hp->elem[(hp->size)++] = nd;
-  }
-
-  //Making sure that heap property is also satisfied
-  for (i = (hp->size-1)/2; i>=0; i--) {
-    heapify(hp, i);
-  }
-}
-*/
-
 // example https://robin-thomas.github.io/min-heap/
 
-void test() {
+//insert at the head of the heap
+void insertWorst(int input) {
   clock_t start_t;
   clock_t end_t;
   clock_t total_t;
 
   int i;
-  int size = 10000000;
+  int size = input;
 
   minHeap hp = initMinHeap();
   for (i = 0; i < size; i++) {
     insertNode(&hp, i, i);
   }
-  printf("heap was built!\n");
+  printf("Worst case\n");
   start_t = clock();
-  //for (i = 1000; i > 0; i--) {
-    insertNode(&hp, 0, 0);
-  //}
+  for (i = 0; i < 500; i++) {
+    insertNode(&hp, 0, -1 - i);
+  }
   end_t = clock();
   total_t = (double)(end_t - start_t);
-  printf("node inserted %ld\n", total_t);
+  printf("Clock ticks taken: %ld\n", total_t);
+}
+
+//insert at the end of the heap
+void insertBest(int input) {
+  clock_t start_t;
+  clock_t end_t;
+  clock_t total_t;
+
+  int i;
+  int size = input;
+
+  minHeap hp = initMinHeap();
+  for (i = 0; i < size; i++) {
+    insertNode(&hp, i, i);
+  }
+  printf("best case\n");
+  start_t = clock();
+  for (i = 0; i < 500; i++) {
+    insertNode(&hp, 0, input + 1 + i);
+  }
+  end_t = clock();
+  total_t = (double)(end_t - start_t);
+  printf("Clock ticks taken: %ld\n", total_t);
+}
+
+void insertAverage(int input) {
+
+  srand(time(NULL));
+
+  clock_t start_t;
+  clock_t end_t;
+  clock_t total_t;
+
+  int i;
+  int size = input;
+
+  minHeap hp = initMinHeap();
+  for (i = 0; i < size; i++) {
+    insertNode(&hp, i, i);
+  }
+  printf("Average case\n");
+  start_t = clock();
+  for (i = 0; i < 500; i++) {
+    insertNode(&hp, 0, rand()%size);
+  }
+  end_t = clock();
+  total_t = (double)(end_t - start_t);
+  printf("Clock ticks taken: %ld\n", total_t);
+}
+
+
+void testDelete(int input) {
+  clock_t start_t;
+  clock_t end_t;
+  clock_t total_t;
+
+  int i;
+  int size = input;
+
+  minHeap hp = initMinHeap();
+  for (i = 0; i < size; i++) {
+    insertNode(&hp, i, i);
+  }
+  printf("Delete case\n");
+  start_t = clock();
+  for (i = 0; i < 500; i++) {
+    deleteNode(&hp);
+  }
+  end_t = clock();
+  total_t = (double)(end_t - start_t);
+  printf("Clock ticks taken: %ld\n", total_t);
+}
+
+void testInsert(int size) {
+  printf("Testing insert for %d\n", size);
+  insertBest(size);
+  insertAverage(size);
+  insertWorst(size);
+  printf("-------------\n");
 }
 
 int main() {
-  test();
+  int queueSize = 100000;
+  testInsert(queueSize);
+  testDelete(queueSize);
+  printf("\n");
   return 0;
 }
