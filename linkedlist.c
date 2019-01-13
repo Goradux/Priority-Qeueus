@@ -158,9 +158,23 @@ void testDeleteMax(long size){
 	return;
 }
 
+void algoTestLinkedList(int size){
+	Node* pq = newNode(0, 0);
+	for (int counter = 0; counter <= size; counter++) {
+		insert(&pq, counter, size);
+	}
+	printf("List built!\n");
+	for (int counter = 0; counter <= size; counter++) {
+		deleteMax(&pq);
+	}
+	printf("List deleted!\n");
+}
+
 int main(){
 
 	int queueSize = 10000000;
+
+	//algoTestLinkedList(queueSize);
 
 	testInsert(queueSize);
 	printf("\n" );

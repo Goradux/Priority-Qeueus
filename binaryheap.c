@@ -67,7 +67,7 @@ void deleteNode(minHeap *hp) {
     hp->element = realloc(hp->element, hp->size*sizeof(node));
     heapify(hp, 0);
   } else {
-    printf("\nMin Heap is empty!\n");
+    printf("\n OOPS! Heap is empty already!\n");
     free(hp->element);
   }
 }
@@ -166,6 +166,18 @@ void testDelete(int input) {
   printf("Clock ticks taken: %ld\n", total_t);
 }
 
+void algoTestBinaryHeap(int size) {
+  minHeap hp = initMinHeap();
+  for (int i = 0; i < size; i++) {
+    insertNode(&hp, i, i);
+  }
+  printf("Heap built!\n");
+  for (int i = 0; i < size+1; i++) {
+    deleteNode(&hp);
+  }
+  printf("Heap deleted!\n");
+}
+
 void testInsert(int size) {
   printf("Testing insert for %d\n", size);
   insertBest(size);
@@ -175,6 +187,7 @@ void testInsert(int size) {
 }
 
 int main() {
+  //algoTestBinaryHeap(100);
   int queueSize = 1000000;
   testInsert(queueSize);
   testDelete(queueSize);
