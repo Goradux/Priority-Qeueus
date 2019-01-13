@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define LCHILD(x) 2*x+1
-#define RCHILD(x) 2*x+2
+#define LEFTCHILD(x) 2*x+1
+#define RIGHTCHILD(x) 2*x+2
 #define PARENT(x) (x-1)/2
 
 typedef struct node {
@@ -13,7 +13,7 @@ typedef struct node {
 
 typedef struct minHeap {
   int size;
-  node *elem;
+  node *element;
 } minHeap;
 
 minHeap initMinHeap() {
@@ -25,9 +25,9 @@ minHeap initMinHeap() {
 void insertNode(minHeap *hp, int data, int priority) {
   //allocating space
   if (hp->size) {
-    hp->elem = realloc(hp->elem, (hp->size+1)*sizeof(node));
+    hp->element = realloc(hp->element, (hp->size+1)*sizeof(node));
   } else {
-    hp->elem = malloc(sizeof(node));
+    hp->element = malloc(sizeof(node));
   }
 
   //initializing the node with value
@@ -37,11 +37,11 @@ void insertNode(minHeap *hp, int data, int priority) {
 
   //positioning the node at the right position in the min heap
   int i = (hp->size)++;
-  while(i && nd.priority < hp->elem[PARENT(i)].priority) {
-    hp->elem[i] = hp->elem[PARENT(i)];
+  while(i && nd.priority < hp->element[PARENT(i)].priority) {
+    hp->element[i] = hp->element[PARENT(i)];
     i = PARENT(i);
   }
-  hp->elem[i] = nd;
+  hp->element[i] = nd;
 }
 
 void swap(node *n1, node *n2) {
@@ -51,29 +51,26 @@ void swap(node *n1, node *n2) {
 }
 
 void heapify(minHeap *hp, int i) {
-  int smallest = (LCHILD(i) < hp-> size && hp->elem[LCHILD(i)].priority < hp->elem[i].priority) ? LCHILD(i) : i;
-  if (RCHILD(i) < hp->size && hp->elem[RCHILD(i)].priority < hp->elem[smallest].priority) {
-    smallest = RCHILD(i);
+  int smallest = (LEFTCHILD(i) < hp-> size && hp->element[LEFTCHILD(i)].priority < hp->element[i].priority) ? LEFTCHILD(i) : i;
+  if (RIGHTCHILD(i) < hp->size && hp->element[RIGHTCHILD(i)].priority < hp->element[smallest].priority) {
+    smallest = RIGHTCHILD(i);
   }
   if (smallest != i) {
-    swap(&(hp->elem[i]), &(hp->elem[smallest]));
+    swap(&(hp->element[i]), &(hp->element[smallest]));
     heapify(hp, smallest);
   }
 }
 
 void deleteNode(minHeap *hp) {
   if (hp->size) {
-    //printf("Deleting node %d\n\n", hp->elem[0].data);
-    hp->elem[0] = hp->elem[--(hp->size)];
-    hp->elem = realloc(hp->elem, hp->size*sizeof(node));
+    hp->element[0] = hp->element[--(hp->size)];
+    hp->element = realloc(hp->element, hp->size*sizeof(node));
     heapify(hp, 0);
   } else {
     printf("\nMin Heap is empty!\n");
-    free(hp->elem);
+    free(hp->element);
   }
 }
-
-// example https://robin-thomas.github.io/min-heap/
 
 //insert at the head of the heap
 void insertWorst(int input) {
@@ -178,7 +175,7 @@ void testInsert(int size) {
 }
 
 int main() {
-  int queueSize = 100000;
+  int queueSize = 1000000;
   testInsert(queueSize);
   testDelete(queueSize);
   printf("\n");

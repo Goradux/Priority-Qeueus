@@ -31,30 +31,16 @@ void deleteMax(Node** head) {
 void insert(Node** head, int dataNew, double priorityNew) {
 	Node* start = (*head);
 
-	// new Node
 	Node* temp = newNode(dataNew, priorityNew);
 
-	// shortcut case
-	// if new priority is higher than heads,
-	// insert new head
-
-	/*
-	if ((*head)->priority > priorityNew) {
-		// Insert new Node before head
-		temp->next = *head;
-		(*head) = temp;
+	// "<=" ensures FIFO
+	while (start->next != NULL && start->next->priority <= priorityNew) {
+		start = start->next;
 	}
-	else { */
-		// Traverse the list and find a
-		// position to insert new node
-							// "<=" ensures FIFO
-		while (start->next != NULL && start->next->priority <= priorityNew) {
-			start = start->next;
-		}
-		// here we are at the right position
-		temp->next = start->next;
-		start->next = temp;
-	//}
+
+	// here we are at the right position
+	temp->next = start->next;
+	start->next = temp;
 }
 
 int isEmpty(Node** head) {
@@ -174,12 +160,17 @@ void testDeleteMax(long size){
 
 int main(){
 
-	int queueSize = 100000;
+	int queueSize = 10000000;
 
 	testInsert(queueSize);
 	printf("\n" );
 	testDeleteMax(queueSize);
-
+	printf("\n" );
+	printf("-------------\n");
+	testInsert(queueSize);
+	printf("\n" );
+	testDeleteMax(queueSize);
+	printf("\n" );
 /*
 	testInsert(10000);
 	printf("\n" );
